@@ -46,7 +46,7 @@ return view.extend({
 						.then(function(response) {
 							var result = JSON.parse(response);
 							document.getElementById('client-ip').textContent = result.client.ip;
-							document.getElementById('client-isp').textContent = result.client.isp + '[' + result.client.lat + ', ' + result.client.lon + ']';
+							document.getElementById('client-isp').textContent = result.client.isp + ' [' + result.client.lat + ', ' + result.client.lon + ']';
 							document.getElementById('server-name').textContent = result.server.sponsor;
 							document.getElementById('server-id').textContent = result.server.id;
 							document.getElementById('server-location').textContent = result.server.name + ' (' + result.server.distance + ' km)';
