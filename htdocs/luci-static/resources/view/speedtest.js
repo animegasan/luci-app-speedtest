@@ -14,7 +14,7 @@ return view.extend({
 	render: function() {
 		var select = [
 			E('label', { 'class': 'cbi-input-label', 'for': 'speedtest-type', 'style': 'margin-right: 8px;'}, _('Test')),
-			E('select', { 'id': 'speedtest-type'}, [
+			E('select', { 'id': 'speedtest-type', 'style': 'width:80%;'}, [
 				E('option', { 'value': 'all', 'selected': 'selected'}, _('All')),
 				E('option', { 'value': 'latency' }, _('Latency')),
 				E('option', { 'value': 'download' }, _('Download')),
@@ -120,8 +120,8 @@ return view.extend({
 			E('table', {'class': 'table'}, [
 				E('tr', {'class': 'tr'}, [
 					E('td', {'class': 'td', 'style': 'overflow:initial;'}, select),
-					E('td', {'class': 'td', 'style': 'overflow:initial;'}, status),
-					E('td', {'class': 'td'}, button)
+					E('td', {'class': 'td', 'style': 'overflow:initial;'}, button),
+					E('td', {'class': 'td'}, status)
 				])
 			]),
 			E('div', {'class': 'cbi-section'}, [
