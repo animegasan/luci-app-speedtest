@@ -1,6 +1,6 @@
 {
 	"admin/network/speedtest": {
-		"title": "speedtest",
+		"title": "Speedtest",
 		"order": 50,
 		"action": {
 			"type": "view",
