@@ -103,8 +103,7 @@ jobs:
       - name: Upload IPK to release
         uses: softprops/action-gh-release@v1
         if: steps.compile.outputs.status == 'success'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{needs.job_check.outputs.alpha_version}}
+          token: ${{ secrets.GITHUB_TOKEN }}
           files: ${{ env.FIRMWARE }}/base/luci-app-*.ipk
+          tag_name: ${{needs.job_check.outputs.alpha_version}}
