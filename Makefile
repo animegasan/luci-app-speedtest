@@ -4,12 +4,12 @@
 
 include $(TOPDIR)/rules.mk
 
-LUCI_TITLE:=LuCI for speedtest
+LUCI_TITLE:=LuCI for speedtestcpp
 LUCI_DEPENDS:=+speedtestcpp
-LUCI_DESCRIPTION:=LuCI support for Speedtestcpp
+LUCI_DESCRIPTION:=LuCI support for speedtestcpp
 
 PKG_MAINTAINER:=Hilman Maulana <hilman0.0maulana@gmail.com>
-PKG_VERSION:=1.1
+PKG_VERSION:=1.2
 PKG_LICENSE:=Apache-2.0
 
 include $(TOPDIR)/feeds/luci/luci.mk
