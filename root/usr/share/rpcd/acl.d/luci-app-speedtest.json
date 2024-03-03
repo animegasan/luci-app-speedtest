@@ -1,7 +1,7 @@
 {
 	"luci-app-speedtest": {
 		"description": "Grant access to speedtest",
-		"write": {
+		"read": {
 			"file": {
 				"/usr/bin/speedtest": [ "exec" ]
 			}
