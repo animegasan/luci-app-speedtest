@@ -1,5 +1,8 @@
-<h1 align="center">LuCI support for speedtestcpp</h3>
-
+<div align="center">
+  <h1>LuCI support for speedtestcpp</h1>
+  <h3>Here you can perform a speed test to measure the basic aspects of your network connection</h3>
+</div>
+<hr/>
 <div align="center">
   <img alt="License" src="https://img.shields.io/github/license/animegasan/luci-app-speedtest?style=for-the-badge">
   <img alt="Forks" src="https://img.shields.io/github/forks/animegasan/luci-app-speedtest?style=for-the-badge">
