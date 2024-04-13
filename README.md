@@ -23,4 +23,6 @@
 </div>
 <hr/>
 
-![image](https://github.com/animegasan/luci-app-speedtest/assets/14136053/393e51b2-4080-4ca9-b5ce-3d18944c8daf)
+![image](https://github.com/animegasan/luci-app-speedtest/assets/14136053/9cc7c22a-6212-489f-8c01-bfbce2f1cd1b)
+
+![image](https://github.com/animegasan/luci-app-speedtest/assets/14136053/2e2aa112-3a58-425d-8dea-cfcf6ccbfe7b)
