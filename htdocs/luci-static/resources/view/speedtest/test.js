@@ -154,4 +154,5 @@ return view.extend({
 			])
 		])
 	}
-})
+});
+
