@@ -29,8 +29,8 @@ return view.extend({
 			E('label', { 'class': 'cbi-input-label', 'style': 'margin-right: 8px;'}, _('Status')),
 			E('em', { 'id': 'speedtest-status'}, _('Available'))
 		];
-		var table = [
-			E('h3', {'class': 'section-title'}, _('Results')),
+		var testing = [
+			E('h3', {'class': 'section-title'}, _('Testing')),
 			E('table', {'class': 'table cbi-section-table'}, [
 				E('tr', {'class': 'tr table-title'}, [
 					E('th', {'class': 'th ', 'style': 'display: none;'})
@@ -90,27 +90,43 @@ return view.extend({
 						if (value !== 'all') {
 							command.push('--' + value);
 						}
-
 						var status = document.getElementById('speedtest-status');
 						status.textContent = _('Running');
-
-						fs.exec_direct('speedtest', command)
-						.then(function(response) {
+						fs.exec_direct('speedtest', command).then(function(response) {
 							var result = JSON.parse(response);
+							var date = new Date().toLocaleDateString(undefined, {
+								weekday: 'short',
+								month: 'short',
+								day: 'numeric'
+							});
+							var time = new Date().toLocaleTimeString(undefined, {
+								hour: '2-digit',
+								minute: '2-digit'
+							});
+							var type = value;
+							var ping = result.ping ? result.ping + ' ms' : '-';
+							var jitter = result.jitter ? result.jitter + ' ms' : '-';
+							var download = result.download_mbit ? result.download_mbit + ' Mbit/s' : '-';
+							var upload = result.upload_mbit ? result.upload_mbit + ' Mbit/s' : '-';
 							document.getElementById('client-ip').textContent = result.client.ip;
 							document.getElementById('client-isp').textContent = result.client.isp + ' [' + result.client.lat + ', ' + result.client.lon + ']';
 							document.getElementById('server-name').textContent = result.server.sponsor;
 							document.getElementById('server-id').textContent = result.server.id;
 							document.getElementById('server-location').textContent = result.server.name + ' (' + result.server.distance + ' km)';
 							document.getElementById('server-host').textContent = result.server.host;
-							document.getElementById('ping').textContent = result.ping + ' ms';
-							document.getElementById('jitter').textContent = result.jitter + ' ms';
-							document.getElementById('download').textContent = result.download_mbit ? result.download_mbit + ' Mbit/s' : '-';
-							document.getElementById('upload').textContent = result.upload_mbit ? result.upload_mbit + ' Mbit/s' : '-';
+							document.getElementById('ping').textContent = ping;
+							document.getElementById('jitter').textContent = jitter;
+							document.getElementById('download').textContent = download;
+							document.getElementById('upload').textContent = upload;
 							status.textContent = _('Finished');
 							running = false;
-						})
-						.catch(function(err) {
+							var resultString = '| ' + date + ' | ' + time + ' | ' + type + ' | ' + ping + ' | ' + jitter + ' | ' + download + ' | ' + upload + ' |\n';
+							var files = '/etc/speedtest_result';
+							fs.read(files).then(function(data) {
+								var newData = data.trim() + '\n' + resultString;
+								fs.write(files, newData);
+							});
+						}).catch(function(err) {
 							if (!err.response) {
 								status.textContent = _('No response received from speedtest. Please check your internet connection or try again later.');
 							} else if (err.response.data && err.response.data.error === 'unable to retrieve your ip info') {
@@ -134,7 +150,7 @@ return view.extend({
 				])
 			]),
 			E('div', {'class': 'cbi-section'}, [
-				E('div', {'class': 'speedtest-info'}, table)
+				E('div', {'class': 'speedtest-info'}, testing)
 			])
 		])
 	}
