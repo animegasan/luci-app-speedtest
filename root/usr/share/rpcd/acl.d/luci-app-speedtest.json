@@ -3,7 +3,13 @@
 		"description": "Grant access to speedtest",
 		"read": {
 			"file": {
-				"/usr/bin/speedtest": [ "exec" ]
+				"/usr/bin/speedtest": [ "exec" ],
+				"/etc/speedtest_result": [ "read" ]
+			}
+		},
+		"write": {
+			"file": {
+				"/etc/speedtest_result": [ "write" ]
 			}
 		}
 	}
