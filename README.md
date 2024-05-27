@@ -11,15 +11,9 @@
 </div>
 <br/>
 <div align="center">
-  <a target="_blank" href="https://www.buymeacoffee.com/animegasan">
-    <img alt="buymeacoffee" src="https://img.shields.io/badge/buy%20me%20a%20coffee-donation?style=for-the-badge&logo=buymeacoffee&labelColor=black&color=%23FFDD00">
-  </a>
-  <a target="_blank" href="https://www.paypal.com/paypalme/animegasan">
-    <img alt="paypal" src="https://img.shields.io/badge/paypal-donation?style=for-the-badge&logo=paypal&labelColor=black&color=%23003087">
-  </a>
-  <a target="_blank" href="https://saweria.co/animegasan">
-    <img alt="saweria" src="https://img.shields.io/badge/saweria-donation?style=for-the-badge&logo=adobeindesign&labelColor=black&color=%23FFA401">
-  </a>
+  <a target="_blank" href="https://saweria.co/animegasan" alt="Saweria"><img src="https://img.shields.io/badge/saweria-donation?style=for-the-badge&logo=adobeindesign&labelColor=black&color=%23FFA401"></a>
+  <a target="_blank" href="https://www.paypal.com/paypalme/animegasan" alt="PayPal"><img src="https://img.shields.io/badge/paypal-donation?style=for-the-badge&logo=paypal&labelColor=black&color=%23003087"></a>
+  <a target="_blank" href="https://www.buymeacoffee.com/animegasan" alt="BuyMeACoffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donation?style=for-the-badge&logo=buymeacoffee&labelColor=black&color=%23FFDD00"></a>
 </div>
 <hr/>
 
