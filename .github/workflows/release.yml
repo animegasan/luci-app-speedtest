@@ -84,8 +84,6 @@ jobs:
           git clone -b master https://github.com/${{ github.repository }}.git package/downloads/luci-app-speedtest
           ./scripts/feeds update -a
           echo "CONFIG_PACKAGE_luci-app-speedtest=m" > .config
-          echo "CONFIG_LUCI_JSMIN=n" >> .config
-          echo "CONFIG_LUCI_CSSTIDY=n" >> .config
           ./scripts/feeds install -d n luci-app-speedtest
           make download -j8
       - name: Configure IPK
