@@ -17,6 +17,12 @@
 </div>
 <hr/>
 
+## Install via Terminal
+```
+curl -s https://raw.githubusercontent.com/animegasan/luci-app-speedtest/master/install.sh | sh
+```
+
+# Preview
 ![image](https://github.com/animegasan/luci-app-speedtest/assets/14136053/9cc7c22a-6212-489f-8c01-bfbce2f1cd1b)
 
 ![image](https://github.com/animegasan/luci-app-speedtest/assets/14136053/2e2aa112-3a58-425d-8dea-cfcf6ccbfe7b)
