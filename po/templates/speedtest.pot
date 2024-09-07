@@ -7,149 +7,289 @@ msgstr ""
 
 #: applications/luci-app-speedtest/root/usr/share/luci/menu.d/luci-app-speedtest.json:3
 #: applications/luci-app-speedtest/root/usr/share/luci/menu.d/luci-app-speedtest.json:13
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:16
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:75
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:16
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:165
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:15
 msgid "Speedtest"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:17
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:76
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:17
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:166
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:16
 msgid "Here you can perform a speed test to measure the basic aspects of your network connection."
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:20
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:130
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:20
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:119
 msgid "Test"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:22
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:21
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:170
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:63
 msgid "All"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:23
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:22
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:178
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:122
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:64
 msgid "Latency"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:24
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:71
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:133
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:23
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:182
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:123
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:65
 msgid "Download Speed"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:25
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:75
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:134
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:24
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:186
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:124
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:66
 msgid "Upload Speed"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:29
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:29
 msgid "Status"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:30
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:30
 msgid "Available"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:33
-msgid "Testing"
-msgstr ""
-
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:39
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:146
 msgid "IP Address"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:43
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:150
 msgid "Provider"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:47
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:154
 msgid "Server"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:51
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:158
 msgid "ID"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:55
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:162
 msgid "Location"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:59
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:166
 msgid "Server Host"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:63
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:131
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:170
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:120
 msgid "Ping"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:67
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:132
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:174
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:121
 msgid "Jitter"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:94
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:46
 msgid "Running"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:121
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:75
 msgid "Finished"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:131
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:85
 msgid "No response received, please check your internet connection or try again later."
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:133
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:87
 msgid "Unable to retrieve IP information, please check your internet connection."
-msgstr ""
-
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/test.js:141
-msgid "Start"
 msgstr ""
 
 #: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:47
 msgid "Invalid index"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:56
-msgid "Data deleted successfully"
-msgstr ""
-
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:86
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:74
 msgid "Delete data"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:87
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:75
 msgid "Are you sure you want to delete this data?"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:92
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:80
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:279
 msgid "Cancel"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:104
-msgid "Error deleting data"
-msgstr ""
-
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:108
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:112
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:96
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:100
 msgid "Delete"
 msgstr ""
 
 #: applications/luci-app-speedtest/root/usr/share/luci/menu.d/luci-app-speedtest.json:21
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:141
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:313
 msgid "Results"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:128
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:116
 msgid "Date"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:129
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:117
 msgid "Time"
 msgstr ""
 
-#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:141
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:304
 msgid "No data available."
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:118
+msgid "Method"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:153
+msgid "Displaying %s - %s of %s"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:189
+msgid "Displaying 1-%s of %s"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:171
+msgid "LuCI"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:172
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:17
+msgid "Schedule"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:232
+msgid "Download All"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:262
+msgid "Download %s"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:273
+msgid "Clear data"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:274
+msgid "Are you sure you want to clear all data?"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:294
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/result.js:298
+msgid "Clear"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:18
+msgid "Set up Speedtest to run according to scheduled times."
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:21
+msgid "Enable"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:22
+msgid "Enable or disable service."
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:25
+msgid "Days of Week"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:26
+msgid "Select days of week to run Speedtest."
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:28
+msgid "Monday"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:29
+msgid "Tuesday"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:30
+msgid "Wednesday"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:31
+msgid "Thursday"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:32
+msgid "Friday"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:33
+msgid "Saturday"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:34
+msgid "Sunday"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:35
+msgid "Start time"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:36
+msgid "Specify start time for Speedtest."
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:42
+msgid "Stop time"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:43
+msgid "Specify stop time for Speedtest."
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:49
+msgid "Frequency (minutes)"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:50
+msgid "Specify how often the speed test should run, with a maximum of once per hour."
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:52
+msgid "Enter minutes (1-60)"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:56
+msgid "The frequency must be between 1 and 60 minutes."
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:60
+msgid "Test type"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/setting.js:61
+msgid "Specify test type for Speedtest."
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:95
+msgid "Test All"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:131
+msgid "Test %s"
+msgstr ""
+
+#: applications/luci-app-speedtest/htdocs/luci-static/resources/view/speedtest/speedtest.js:142
+msgid "Category"
+msgstr ""
+
+#: applications/luci-app-speedtest/root/usr/share/luci/menu.d/luci-app-speedtest.json:29
+msgid "Setting"
 msgstr ""

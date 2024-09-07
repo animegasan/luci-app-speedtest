@@ -2,12 +2,15 @@
 	"luci-app-speedtest": {
 		"description": "Grant access to speedtest",
 		"read": {
+			"uci": [ "speedtest" ],
 			"file": {
 				"/usr/bin/speedtest": [ "exec" ],
-				"/etc/speedtest_result": [ "read" ]
+				"/etc/speedtest_result": [ "read" ],
+				"/usr/share/speedtest/schedule": [ "exec" ]
 			}
 		},
 		"write": {
+			"uci": [ "speedtest" ],
 			"file": {
 				"/etc/speedtest_result": [ "write" ]
 			}

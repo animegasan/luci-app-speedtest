@@ -1,1 +1,1 @@
-| date | time | test | ping | jitter | download | upload |
+| date | time | method | test | ping | jitter | latency | download | upload |
