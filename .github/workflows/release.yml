@@ -44,7 +44,10 @@ jobs:
           sed -i '/^CONFIG_LUCI_JSMIN=/d' .config
           sed -i '/^CONFIG_LUCI_CSSTIDY=/d' .config
           make package/luci-app-speedtest/compile
-          ls bin/packages/x86_64/base/
+          IPK_PATH=$(find sdk/bin/packages/x86_64/base/ -name 'luci-app-*.ipk')
+          IPK_NAME=$(basename $IPK_PATH)
+          echo "IPK_PATH=$IPK_PATH" >> $GITHUB_ENV
+          echo "IPK_NAME=$IPK_NAME" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         id: create_release
@@ -62,6 +65,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: sdk/bin/packages/x86_64/base/luci-app-*.ipk
-          asset_name: luci-app-speedtest.ipk
+          asset_path: ${{ env.IPK_PATH }}
+          asset_name: ${{ env.IPK_NAME }}
           asset_content_type: application/octet-stream
