@@ -21,6 +21,7 @@ jobs:
           sudo apt install -y build-essential clang flex bison g++ gawk \
           gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev \
           python3-setuptools rsync swig unzip zlib1g-dev file wget qemu-utils
+          export TERM=xterm
 
       - name: Download resources
         run: |
@@ -31,24 +32,16 @@ jobs:
           echo "Clone IPK"
           git clone https://github.com/animegasan/luci-app-speedtest openwrt-sdk/package/luci-app-speedtest
 
-      - name: Set terminal environment
-        run: |
-          export TERM=xterm
-
       - name: Set up SDK feeds
         run: |
           cd openwrt-sdk
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-      - name: Generate default config
-        run: |
-          cd openwrt-sdk
-          make defconfig
-
       - name: Build IPK from Makefile
         run: |
           cd openwrt-sdk
+          make defconfig
           make package/luci-app-speedtest/compile V=s
 
       - name: Archive built IPK
@@ -56,3 +49,21 @@ jobs:
         with:
           name: built-ipk
           path: openwrt-sdk/bin/packages/x86_64/luci-app-speedtest.ipk
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: 'v1.0.0'    # Kamu bisa mengubah ini ke versi yang diinginkan
+          release_name: 'Release v1.0.0'
+          body: "Build dari IPK luci-app-speedtest"
+          draft: false
+          prerelease: false
+
+      - name: Upload IPK to Release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: openwrt-sdk/bin/packages/x86_64/luci-app-speedtest.ipk
+          asset_name: luci-app-speedtest.ipk
+          asset_content_type: application/octet-stream
