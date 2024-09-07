@@ -42,8 +42,11 @@ jobs:
         run: |
           cd openwrt-sdk
           make defconfig
+          rm -rf feeds/luci/contrib/package/csstidy
+          sed -i '/^CONFIG_LUCI_JSMIN=/d' .config
+          sed -i '/^CONFIG_LUCI_CSSTIDY=/d' .config
           make package/luci-app-speedtest/compile V=s
-          ls bin/packages/x86_64/
+          ls bin/packages/x86_64/packages/
 
       - name: Create GitHub Release
         id: create_release
@@ -61,6 +64,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: openwrt-sdk/bin/packages/x86_64/luci-app-speedtest.ipk
+          asset_path: openwrt-sdk/bin/packages/x86_64/packages/luci-app-speedtest*.ipk
           asset_name: luci-app-speedtest.ipk
           asset_content_type: application/octet-stream
