@@ -31,11 +31,20 @@ jobs:
           echo "Clone IPK"
           git clone https://github.com/animegasan/luci-app-speedtest openwrt-sdk/package/luci-app-speedtest
 
+      - name: Set terminal environment
+        run: |
+          export TERM=xterm
+
       - name: Set up SDK feeds
         run: |
           cd openwrt-sdk
           ./scripts/feeds update -a
           ./scripts/feeds install -a
+
+      - name: Generate default config
+        run: |
+          cd openwrt-sdk
+          make defconfig
 
       - name: Build IPK from Makefile
         run: |
@@ -47,25 +56,3 @@ jobs:
         with:
           name: built-ipk
           path: openwrt-sdk/bin/packages/x86_64/luci-app-speedtest.ipk
-
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v1.0.0 # Sesuaikan versi sesuai dengan versi rilis kamu
-          release_name: "OpenWrt luci-app-speedtest v1.0.0"
-          body: "Rilis IPK luci-app-speedtest untuk OpenWrt x86_64."
-          draft: false
-          prerelease: false
-
-      - name: Upload IPK to Release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: openwrt-sdk/bin/packages/x86_64/luci-app-speedtest.ipk
-          asset_name: luci-app-speedtest.ipk
-          asset_content_type: application/octet-stream
