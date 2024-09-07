@@ -1,0 +1,87 @@
+#!/bin/sh
+
+# This is free software, licensed under the Apache License, Version 2.0
+#
+# Copyright (C) 2024 Hilman Maulana <hilman0.0maulana@gmail.com>
+
+start_service() {
+	local command="speedtest --output json"
+	[ "$1" != "all" ] && command="$command --$1"
+	local response=$(eval $command)
+	[ $? -ne 0 ] && { echo "<6>Speedtest: No response received from speedtest. Please check your internet connection or try again later." > /dev/kmsg; return; }
+	local date_time=$(date '+%a, %b %d')
+	local time=$(date '+%I:%M %p')
+	local ping=$(echo $response | grep -o '"ping":[0-9]*' | awk -F':' '{print $2}')
+	local jitter=$(echo $response | grep -o '"jitter":[0-9]*' | awk -F':' '{print $2}')
+	local latency=$(echo $response | grep -o '"latency":[0-9]*' | awk -F':' '{print $2}')
+	local download=$(echo $response | grep -o '"download_mbit":[0-9.]*' | awk -F':' '{print $2}')
+	local upload=$(echo $response | grep -o '"upload_mbit":[0-9.]*' | awk -F':' '{print $2}')
+	local download_mbit=$( [ -z "$download" ] && echo "-" || echo "${download} Mbit/s" )
+	local upload_mbit=$( [ -z "$upload" ] && echo "-" || echo "${upload} Mbit/s" )
+	local method=$(echo "$1" | awk '{print toupper(substr($0, 1, 1)) tolower(substr($0, 2))}')
+	local ping_result=$( [ -z "$ping" ] && echo "-" || echo "${ping} ms" )
+	local jitter_result=$( [ -z "$jitter" ] && echo "-" || echo "${jitter} ms" )
+	local latency_result=$( [ -z "$latency" ] && echo "-" || echo "${latency} ms" )
+	local result="| $date_time | $time | Schedule | $method | $ping_result | $jitter_result | $latency_result | $download_mbit | $upload_mbit |"
+	echo $result >> /etc/speedtest_result
+}
+
+update_service() {
+	local enable=$(uci get speedtest.schedule.enable)
+	local start=$(uci get speedtest.schedule.start)
+	local stop=$(uci get speedtest.schedule.stop)
+	local days=$(uci get speedtest.schedule.days)
+	local frequency=$(uci get speedtest.schedule.frequency)
+	local test=$(uci get speedtest.schedule.test)
+	sed -i '/speedtest/d' /etc/crontabs/root
+	[ "$enable" = "1" ] || { echo "<6>Speedtest: Speedtest schedule disabled." > /dev/kmsg; return; }
+	local day_map=""
+	if [ "$days" = "1 2 3 4 5 6 7" ]; then
+		day_map="Every day"
+		days="*"
+	else
+		local day_num
+		for day_num in 1 2 3 4 5 6 7; do
+			case $day_num in
+				1) day_name="Monday";;
+				2) day_name="Tuesday";;
+				3) day_name="Wednesday";;
+				4) day_name="Thursday";;
+				5) day_name="Friday";;
+				6) day_name="Saturday";;
+				7) day_name="Sunday";;
+			esac
+			if echo "$days" | grep -wq "$day_num"; then
+				if [ -n "$day_map" ]; then
+					day_map="${day_map}, "
+				fi
+				day_map="${day_map}${day_name}"
+			fi
+		done
+	fi
+	local start_time=$(date -d "$start:00" '+%I:%M %p')
+	local stop_time=$(date -d "$stop:00" '+%I:%M %p')
+	local cron_frequency=$( [ "$frequency" -eq 60 ] && echo "0" || echo "*/$frequency" )
+	local cron_hours=$( [ "$start" = "$stop" ] && echo "*" || echo "$start-$stop" )
+	local method_test=$(echo "$test" | awk '{print toupper(substr($0, 1, 1)) tolower(substr($0, 2))}')
+	echo "$cron_frequency $cron_hours * * $days /usr/share/speedtest/schedule start $test" >> /etc/crontabs/root
+	echo "<6>Speedtest: Speedtest schedule enabled. Test type: $method_test, Frequency: $frequency minute(s), From: $start_time to $stop_time, Days: $day_map" > /dev/kmsg
+}
+
+# Main script
+case "$1" in
+	start)
+		[ -z "$2" ] && { echo "Error: You must provide a test type (all, download, upload, latency)."; exit 1; }
+		start_service "$2"
+		;;
+	update)
+		update_service
+		;;
+	*)
+		echo "Syntax: $0 <command>"
+		echo "Available commands:"
+		echo "	start <type>	Start service with specified type (all, download, upload, latency)"
+		echo "	update		Update service"
+		;;
+esac
+
