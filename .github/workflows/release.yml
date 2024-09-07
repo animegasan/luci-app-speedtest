@@ -25,27 +25,26 @@ jobs:
 
       - name: Download resources
         run: |
-          echo "Download SDK"
           curl -L https://downloads.openwrt.org/releases/23.05.4/targets/x86/64/openwrt-sdk-23.05.4-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz -o sdk.tar.xz
-          mkdir openwrt-sdk
-          tar -xf sdk.tar.xz -C openwrt-sdk --strip-components=1
-          echo "Clone IPK"
-          git clone https://github.com/animegasan/luci-app-speedtest openwrt-sdk/package/luci-app-speedtest
+          mkdir sdk
+          tar -xf sdk.tar.xz -C sdk --strip-components=1
+          git clone https://github.com/animegasan/luci-app-speedtest sdk/package/luci-app-speedtest
 
       - name: Set up SDK feeds
         run: |
-          cd openwrt-sdk
+          cd sdk
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
       - name: Build IPK from Makefile
         run: |
-          cd openwrt-sdk
+          cd sdk
           make defconfig
           rm -rf feeds/luci/contrib/package/csstidy
           sed -i '/^CONFIG_LUCI_JSMIN=/d' .config
           sed -i '/^CONFIG_LUCI_CSSTIDY=/d' .config
-          make package/luci-app-speedtest/compile V=s
+          make package/luci-app-speedtest/compile
+          ls bin/packages/x86_64/base/
 
       - name: Create GitHub Release
         id: create_release
@@ -63,6 +62,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: openwrt-sdk/bin/packages/x86_64/base/luci-app-*.ipk
+          asset_path: sdk/bin/packages/x86_64/base/luci-app-*.ipk
           asset_name: luci-app-speedtest.ipk
           asset_content_type: application/octet-stream
