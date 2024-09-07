@@ -1,4 +1,4 @@
-name: Build OpenWrt IPK
+name: Build IPK
 
 on:
   push:
@@ -43,16 +43,13 @@ jobs:
           cd openwrt-sdk
           make defconfig
           make package/luci-app-speedtest/compile V=s
-
-      - name: Archive built IPK
-        uses: actions/upload-artifact@v3
-        with:
-          name: built-ipk
-          path: openwrt-sdk/bin/packages/x86_64/luci-app-speedtest.ipk
+          ls bin/packages/x86_64/
 
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: 'v1.0.0'    # Kamu bisa mengubah ini ke versi yang diinginkan
           release_name: 'Release v1.0.0'
