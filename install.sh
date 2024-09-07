@@ -1,7 +1,7 @@
 #!/bin/sh
 
 apk_name="luci-app-speedtest"
-version="2.1"
+version="2.2"
 
 echo "Updating packages"
 if ! opkg update; then
