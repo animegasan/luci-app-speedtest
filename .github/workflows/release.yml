@@ -48,7 +48,7 @@ jobs:
 
       - name: Compile IPK
         run: |
-          echo "=> Compile ${IPK_NAME} <="
+          echo "=> Compile ${IPK_NAME} packages <="
           cd sdk
           make defconfig
           rm -rf feeds/luci/contrib/package/csstidy
@@ -58,7 +58,7 @@ jobs:
           make package/${IPK_NAME}/compile
           IPK_PATH=$(find bin/packages/x86_64/base/ -name 'luci-app-*.ipk')
           IPK_FILE=$(basename $IPK_PATH)
-          echo "IPK_PATH=$IPK_PATH" >> $GITHUB_ENV
+          echo "IPK_PATH=sdk/$IPK_PATH" >> $GITHUB_ENV
           echo "IPK_FILE=$IPK_FILE" >> $GITHUB_ENV
 
       - name: Create GitHub Release
