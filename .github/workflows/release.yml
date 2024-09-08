@@ -33,7 +33,7 @@ jobs:
           PKG_NAME=$(basename ${{ github.repository }})
           echo "PKG_NAME=$PKG_NAME" >> $GITHUB_ENV
 
-          echo -e "\033[31m=>\033[34m Set up $PKG_NAME packages \033[31m<=\033[0m"
+          echo -e "\033[31m=>\033[34m Set up $PKG_NAME package \033[31m<=\033[0m"
           git clone https://github.com/${{ github.repository }} sdk/package/${PKG_NAME}
           PKG_VERSION=$(grep -oP 'PKG_VERSION:=\K.*' Makefile)
           echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
@@ -49,23 +49,17 @@ jobs:
 
       - name: Configure & compile IPK
         run: |
-          echo -e "\033[31m=>\033[34m Configure ${PKG_NAME} packages \033[31m<=\033[0m"
+          echo -e "\033[31m=>\033[34m Configure ${PKG_NAME} package \033[31m<=\033[0m"
           cd sdk && make defconfig
           rm -rf feeds/luci/contrib/package/csstidy
           sed -i '/^CONFIG_LUCI_JSMIN=/d' .config
           sed -i '/^CONFIG_LUCI_CSSTIDY=/d' .config
           export TERM=xterm
 
-          echo -e "\033[31m=>\033[34m Compile ${PKG_NAME} packages \033[31m<=\033[0m"
+          echo -e "\033[31m=>\033[34m Compile ${PKG_NAME} package \033[31m<=\033[0m"
           make package/${PKG_NAME}/{clean,compile} -j$(nproc)
-          ls -l bin/packages/x86_64/
-          ls -l bin/packages/x86_64/base
-          ls -l bin/packages/x86_64/luci
-          ls -l bin/packages/x86_64/packages
-          PKG_PATH=$(find bin/packages/x86_64/base/ -name 'luci-app-*.ipk')
-          echo "Path = $PKG_PATH"
+          PKG_PATH=$(find bin/packages/x86_64/luci/ -name 'luci-app-*.ipk')
           PKG_FILE=$(basename $PKG_PATH)
-          echo "PKG_FILE = $PKG_FILE"
           echo "PKG_PATH=sdk/$PKG_PATH" >> $GITHUB_ENV
           echo "PKG_FILE=$PKG_FILE" >> $GITHUB_ENV
 
