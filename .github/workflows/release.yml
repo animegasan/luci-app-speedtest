@@ -38,7 +38,7 @@ jobs:
           chmod +x sdk/package/${IPK_NAME}/root/usr/share/speedtest/schedule
           PKG_VERSION=$(grep '^PKG_VERSION:' sdk/package/${IPK_NAME}/Makefile | awk '{print $2}')
           echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
-          echo ${{ env.PKG_VERSION }}
+          echo "PKG_VERSION is $PKG_VERSION"
 
       - name: Set up SDK feeds
         run: |
