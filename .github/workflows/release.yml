@@ -62,9 +62,8 @@ jobs:
           echo "PKG_PATH=sdk/$PKG_PATH" >> $GITHUB_ENV
           echo "PKG_FILE=$PKG_FILE" >> $GITHUB_ENV
 
-      - name: Create GitHub release
-        id: create_release
-        uses: actions/create-release@v1.1.0
+      - name: Create GitHub release and Upload IPK
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -72,14 +71,6 @@ jobs:
           release_name: ${{ env.PKG_NAME }}
           draft: false
           prerelease: false
+          files: ${{ env.PKG_PATH }}
           body: "Build dari IPK luci-app-speedtest"
 
-      - name: Upload IPK to release
-        uses: actions/upload-release-asset@v1.1.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.PKG_PATH }}
-          asset_name: ${{ env.PKG_FILE }}
-          asset_content_type: application/octet-stream
