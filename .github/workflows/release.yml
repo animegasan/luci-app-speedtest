@@ -34,8 +34,8 @@ jobs:
           echo "IPK_NAME=$IPK_NAME" >> $GITHUB_ENV
           
           echo "=> Download $IPK_NAME <="
-          git clone https://github.com/${{ github.repository }} sdk/package/${{ env.IPK_NAME }}
-          chmod +x sdk/package/${{ env.IPK_NAME }}/root/usr/share/speedtest/schedule
+          git clone https://github.com/${{ github.repository }} sdk/package/${IPK_NAME}
+          chmod +x sdk/package/${IPK_NAME}/root/usr/share/speedtest/schedule
 
       - name: Set up SDK feeds
         run: |
@@ -46,20 +46,20 @@ jobs:
 
       - name: Compile IPK
         run: |
-          echo "Compile ${{ env.IPK_NAME }}"
+          echo "Compile ${IPK_NAME}"
           cd sdk
           make defconfig
           rm -rf feeds/luci/contrib/package/csstidy
           sed -i '/^CONFIG_LUCI_JSMIN=/d' .config
           sed -i '/^CONFIG_LUCI_CSSTIDY=/d' .config
           export TERM=xterm
-          make package/${{ env.IPK_NAME }}/compile
+          make package/${IPK_NAME}/compile
           
           # Locate the IPK file
           IPK_PATH=$(find bin/packages/x86_64/base/ -name 'luci-app-*.ipk')
-          IPK_NAME=$(basename $IPK_PATH)
+          IPK_FILE=$(basename $IPK_PATH)
           echo "IPK_PATH=$IPK_PATH" >> $GITHUB_ENV
-          echo "IPK_NAME=$IPK_NAME" >> $GITHUB_ENV
+          echo "IPK_NAME=$IPK_FILE" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         id: create_release
@@ -78,5 +78,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.IPK_PATH }}
-          asset_name: ${{ env.IPK_NAME }}
+          asset_name: ${{ env.IPK_FILE }}
           asset_content_type: application/octet-stream
