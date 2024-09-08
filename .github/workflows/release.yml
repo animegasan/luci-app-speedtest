@@ -36,6 +36,8 @@ jobs:
           echo "=> Set up $IPK_NAME <="
           git clone https://github.com/${{ github.repository }} sdk/package/${IPK_NAME}
           chmod +x sdk/package/${IPK_NAME}/root/usr/share/speedtest/schedule
+          PKG_VERSION=$(grep '^PKG_VERSION:' sdk/package/${IPK_NAME}/Makefile | awk '{print $2}')
+          echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
 
       - name: Set up SDK feeds
         run: |
@@ -54,12 +56,10 @@ jobs:
           sed -i '/^CONFIG_LUCI_CSSTIDY=/d' .config
           export TERM=xterm
           make package/${IPK_NAME}/compile
-          
-          # Locate the IPK file
           IPK_PATH=$(find bin/packages/x86_64/base/ -name 'luci-app-*.ipk')
           IPK_FILE=$(basename $IPK_PATH)
           echo "IPK_PATH=$IPK_PATH" >> $GITHUB_ENV
-          echo "IPK_NAME=$IPK_FILE" >> $GITHUB_ENV
+          echo "IPK_FILE=$IPK_FILE" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         id: create_release
@@ -67,7 +67,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: 'v1.0.0'    # Kamu bisa mengubah ini ke versi yang diinginkan
+          tag_name: ${{ env.PKG_VERSION }}
           release_name: ${{ env.IPK_NAME }}
           body: "Build dari IPK luci-app-speedtest"
           draft: false
