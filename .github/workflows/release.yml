@@ -28,9 +28,12 @@ jobs:
           echo "=> Download SDK OpenWRT <="
           curl -L https://downloads.openwrt.org/releases/23.05.4/targets/x86/64/openwrt-sdk-23.05.4-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz -o sdk.tar.xz
           mkdir sdk && tar -xf sdk.tar.xz -C sdk --strip-components=1
+          
+          # Extract repository name
           IPK_NAME=$(basename ${{ github.repository }})
           echo "IPK_NAME=$IPK_NAME" >> $GITHUB_ENV
-          echo "=> Download ${{ env.IPK_NAME }} <="
+          
+          echo "=> Download $IPK_NAME <="
           git clone https://github.com/${{ github.repository }} sdk/package/${{ env.IPK_NAME }}
           chmod +x sdk/package/${{ env.IPK_NAME }}/root/usr/share/speedtest/schedule
 
@@ -51,9 +54,11 @@ jobs:
           sed -i '/^CONFIG_LUCI_CSSTIDY=/d' .config
           export TERM=xterm
           make package/${{ env.IPK_NAME }}/compile
+          
+          # Locate the IPK file
           IPK_PATH=$(find bin/packages/x86_64/base/ -name 'luci-app-*.ipk')
           IPK_NAME=$(basename $IPK_PATH)
-          echo "IPK_PATH=sdk/$IPK_PATH" >> $GITHUB_ENV
+          echo "IPK_PATH=$IPK_PATH" >> $GITHUB_ENV
           echo "IPK_NAME=$IPK_NAME" >> $GITHUB_ENV
 
       - name: Create GitHub Release
@@ -70,8 +75,6 @@ jobs:
 
       - name: Upload IPK to Release
         uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.IPK_PATH }}
