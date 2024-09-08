@@ -58,7 +58,9 @@ jobs:
           echo -e "\033[31m=>\033[34m Compile ${PKG_NAME} packages \033[31m<=\033[0m"
           make package/${PKG_NAME}/compile
           PKG_PATH=$(find bin/packages/x86_64/base/ -name 'luci-app-*.ipk')
+          echo "Path = $PKG_PATH"
           PKG_FILE=$(basename $PKG_PATH)
+          echo "PKG_FILE = $PKG_FILE"
           echo "PKG_PATH=sdk/$PKG_PATH" >> $GITHUB_ENV
           echo "PKG_FILE=$PKG_FILE" >> $GITHUB_ENV
 
