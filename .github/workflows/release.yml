@@ -59,6 +59,9 @@ jobs:
           echo -e "\033[31m=>\033[34m Compile ${PKG_NAME} packages \033[31m<=\033[0m"
           make package/${PKG_NAME}/{clean,compile} -j$(nproc)
           ls -l bin/packages/x86_64/
+          ls -l bin/packages/x86_64/base
+          ls -l bin/packages/x86_64/luci
+          ls -l bin/packages/x86_64/packages
           PKG_PATH=$(find bin/packages/x86_64/base/ -name 'luci-app-*.ipk')
           echo "Path = $PKG_PATH"
           PKG_FILE=$(basename $PKG_PATH)
