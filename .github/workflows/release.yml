@@ -27,6 +27,7 @@ jobs:
           curl -L https://downloads.openwrt.org/releases/23.05.4/targets/x86/64/openwrt-sdk-23.05.4-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz -o sdk.tar.xz
           mkdir sdk && tar -xf sdk.tar.xz -C sdk --strip-components=1
           git clone https://github.com/animegasan/luci-app-speedtest sdk/package/luci-app-speedtest
+          chmod +x sdk/package/luci-app-speedtest/root/usr/share/speedtest/schedule
 
       - name: Set up SDK feeds
         run: |
