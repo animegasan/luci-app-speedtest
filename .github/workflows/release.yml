@@ -17,6 +17,7 @@ jobs:
 
       - name: Set up build environment
         run: |
+          echo "=> Set up build environment <="
           sudo -E apt-get -qq update
           sudo -E apt-get -qq install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-setuptools rsync swig unzip zlib1g-dev file wget
           sudo -E apt-get -qq autoremove --purge
@@ -24,27 +25,32 @@ jobs:
 
       - name: Download resources
         run: |
+          echo "=> Download SDK OpenWRT <="
           curl -L https://downloads.openwrt.org/releases/23.05.4/targets/x86/64/openwrt-sdk-23.05.4-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz -o sdk.tar.xz
           mkdir sdk && tar -xf sdk.tar.xz -C sdk --strip-components=1
-          git clone https://github.com/animegasan/luci-app-speedtest sdk/package/luci-app-speedtest
-          chmod +x sdk/package/luci-app-speedtest/root/usr/share/speedtest/schedule
+          IPK_NAME=$(basename ${{ github.repository }})
+          echo "IPK_NAME=$IPK_NAME" >> $GITHUB_ENV
+          echo "=> Download ${{ env.IPK_NAME }} <="
+          git clone https://github.com/${{ github.repository }} sdk/package/${{ env.IPK_NAME }}
+          chmod +x sdk/package/${{ env.IPK_NAME }}/root/usr/share/speedtest/schedule
 
       - name: Set up SDK feeds
         run: |
+          echo "=> Set up SDK feeds <="
           cd sdk
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-      - name: Build IPK from Makefile
+      - name: Compile IPK
         run: |
+          echo "Compile ${{ env.IPK_NAME }}"
           cd sdk
           make defconfig
           rm -rf feeds/luci/contrib/package/csstidy
           sed -i '/^CONFIG_LUCI_JSMIN=/d' .config
           sed -i '/^CONFIG_LUCI_CSSTIDY=/d' .config
           export TERM=xterm
-          ls -l package/luci-app-speedtest/root/usr/share/speedtest/schedule
-          make package/luci-app-speedtest/compile
+          make package/${{ env.IPK_NAME }}/compile
           IPK_PATH=$(find bin/packages/x86_64/base/ -name 'luci-app-*.ipk')
           IPK_NAME=$(basename $IPK_PATH)
           echo "IPK_PATH=sdk/$IPK_PATH" >> $GITHUB_ENV
@@ -57,7 +63,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: 'v1.0.0'    # Kamu bisa mengubah ini ke versi yang diinginkan
-          release_name: 'Release v1.0.0'
+          release_name: ${{ env.IPK_NAME }}
           body: "Build dari IPK luci-app-speedtest"
           draft: false
           prerelease: false
