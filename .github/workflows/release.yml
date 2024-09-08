@@ -36,9 +36,8 @@ jobs:
           echo "=> Set up $IPK_NAME <="
           git clone https://github.com/${{ github.repository }} sdk/package/${IPK_NAME}
           chmod +x sdk/package/${IPK_NAME}/root/usr/share/speedtest/schedule
-          PKG_VERSION=$(grep '^PKG_VERSION:' sdk/package/${IPK_NAME}/Makefile | awk '{print $2}')
+          PKG_VERSION=$(grep -oP 'PKG_VERSION:=\K.*' Makefile | sed 's/^/v/')
           echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
-          echo "PKG_VERSION is $PKG_VERSION"
 
       - name: Set up SDK feeds
         run: |
