@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'Makefile'
   workflow_dispatch:
 
 jobs:
@@ -17,68 +19,67 @@ jobs:
 
       - name: Set up build environment
         run: |
-          echo "=> Set up build environment <="
+          echo -e "\033[31m=>\033[34m Set up build environment \033[31m<=\033[0m"
           sudo -E apt-get -qq update
           sudo -E apt-get -qq install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-setuptools rsync swig unzip zlib1g-dev file wget
           sudo -E apt-get -qq autoremove --purge
           sudo -E apt-get -qq clean
 
-      - name: Download resources
+      - name: Set up resources
         run: |
-          echo "=> Download SDK OpenWRT <="
-          curl -L https://downloads.openwrt.org/releases/23.05.4/targets/x86/64/openwrt-sdk-23.05.4-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz -o sdk.tar.xz
+          echo -e "\033[31m=>\033[34m Set up SDK OpenWRT \033[31m<=\033[0m"
+          curl -s -L https://downloads.openwrt.org/releases/23.05.4/targets/x86/64/openwrt-sdk-23.05.4-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz -o sdk.tar.xz
           mkdir sdk && tar -xf sdk.tar.xz -C sdk --strip-components=1
-          
-          # Extract repository name from GitHub repository
-          IPK_NAME=$(basename ${{ github.repository }})
-          echo "IPK_NAME=$IPK_NAME" >> $GITHUB_ENV
-          
-          echo "=> Set up $IPK_NAME <="
-          git clone https://github.com/${{ github.repository }} sdk/package/${IPK_NAME}
-          chmod +x sdk/package/${IPK_NAME}/root/usr/share/speedtest/schedule
+          PKG_NAME=$(basename ${{ github.repository }})
+          echo "PKG_NAME=$PKG_NAME" >> $GITHUB_ENV
+
+          echo -e "\033[31m=>\033[34m Set up $PKG_NAME packages \033[31m<=\033[0m"
+          git clone https://github.com/${{ github.repository }} sdk/package/${PKG_NAME}
           PKG_VERSION=$(grep -oP 'PKG_VERSION:=\K.*' Makefile)
           echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
+          chmod +x sdk/package/${PKG_NAME}/root/usr/share/speedtest/schedule
 
       - name: Set up SDK feeds
         run: |
-          echo "=> Set up SDK feeds <="
+          echo -e "\033[31m=>\033[34m Set up SDK feeds \033[31m<=\033[0m"
           cd sdk
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-      - name: Compile IPK
+      - name: Configure & compile IPK
         run: |
-          echo "=> Compile ${IPK_NAME} packages <="
-          cd sdk
-          make defconfig
+          echo -e "\033[31m=>\033[34m Configure ${PKG_NAME} packages \033[31m<=\033[0m"
+          cd sdk && make defconfig
           rm -rf feeds/luci/contrib/package/csstidy
           sed -i '/^CONFIG_LUCI_JSMIN=/d' .config
           sed -i '/^CONFIG_LUCI_CSSTIDY=/d' .config
           export TERM=xterm
-          make package/${IPK_NAME}/compile
-          IPK_PATH=$(find bin/packages/x86_64/base/ -name 'luci-app-*.ipk')
-          IPK_FILE=$(basename $IPK_PATH)
-          echo "IPK_PATH=sdk/$IPK_PATH" >> $GITHUB_ENV
-          echo "IPK_FILE=$IPK_FILE" >> $GITHUB_ENV
 
-      - name: Create GitHub Release
+          echo -e "\033[31m=>\033[34m Compile ${PKG_NAME} packages \033[31m<=\033[0m"
+          make package/${PKG_NAME}/compile
+          PKG_PATH=$(find bin/packages/x86_64/base/ -name 'luci-app-*.ipk')
+          PKG_FILE=$(basename $PKG_PATH)
+          echo "PKG_PATH=sdk/$PKG_PATH" >> $GITHUB_ENV
+          echo "PKG_FILE=$PKG_FILE" >> $GITHUB_ENV
+
+      - name: Create GitHub release
         id: create_release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.PKG_VERSION }}
-          release_name: ${{ env.IPK_NAME }}
-          body: "Build dari IPK luci-app-speedtest"
+          release_name: ${{ env.PKG_NAME }}
           draft: false
           prerelease: false
+          body: "Build dari IPK luci-app-speedtest"
 
-      - name: Upload IPK to Release
-        uses: actions/upload-release-asset@v1
+      - name: Upload IPK to release
+        uses: actions/upload-release-asset@v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.IPK_PATH }}
-          asset_name: ${{ env.IPK_FILE }}
+          asset_path: ${{ env.PKG_PATH }}
+          asset_name: ${{ env.PKG_FILE }}
           asset_content_type: application/octet-stream
