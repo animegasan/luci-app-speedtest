@@ -44,7 +44,7 @@ jobs:
           sed -i '/^CONFIG_LUCI_JSMIN=/d' .config
           sed -i '/^CONFIG_LUCI_CSSTIDY=/d' .config
           make package/luci-app-speedtest/compile
-          IPK_PATH=$(find sdk/bin/packages/x86_64/base/ -name 'luci-app-*.ipk')
+          IPK_PATH=$(find bin/packages/x86_64/base/ -name 'luci-app-*.ipk')
           IPK_NAME=$(basename $IPK_PATH)
           echo "IPK_PATH=$IPK_PATH" >> $GITHUB_ENV
           echo "IPK_NAME=$IPK_NAME" >> $GITHUB_ENV
