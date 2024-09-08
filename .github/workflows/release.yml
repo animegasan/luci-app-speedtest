@@ -29,11 +29,11 @@ jobs:
           curl -L https://downloads.openwrt.org/releases/23.05.4/targets/x86/64/openwrt-sdk-23.05.4-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz -o sdk.tar.xz
           mkdir sdk && tar -xf sdk.tar.xz -C sdk --strip-components=1
           
-          # Extract repository name
+          # Extract repository name from GitHub repository
           IPK_NAME=$(basename ${{ github.repository }})
           echo "IPK_NAME=$IPK_NAME" >> $GITHUB_ENV
           
-          echo "=> Download $IPK_NAME <="
+          echo "=> Set up $IPK_NAME <="
           git clone https://github.com/${{ github.repository }} sdk/package/${IPK_NAME}
           chmod +x sdk/package/${IPK_NAME}/root/usr/share/speedtest/schedule
 
