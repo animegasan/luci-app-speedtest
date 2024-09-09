@@ -42,17 +42,17 @@ jobs:
           mkdir sdk && tar -xf sdk.tar.xz -C sdk --strip-components=1
 
           echo -e "\033[34m📦 Cloning $PKG_NAME package \033[0m"
-          git clone https://github.com/${{ github.repository }} sdk/package/${PKG_NAME}
+          git clone -q https://github.com/${{ github.repository }} sdk/package/${PKG_NAME}
           chmod +x sdk/package/${PKG_NAME}/root/usr/share/speedtest/schedule
 
       - name: 📡 Set up SDK feeds
         run: |
           echo -e "\033[34m🔍 Updating SDK feeds \033[0m"
           cd sdk
-          ./scripts/feeds update -a
+          ./scripts/feeds update -a > /dev/null
 
           echo -e "\033[34m🔗 Installing SDK feeds \033[0m"
-          ./scripts/feeds install -a
+          ./scripts/feeds install -a > /dev/null
 
       - name: ⚙️ Configure & compile IPK
         run: |
