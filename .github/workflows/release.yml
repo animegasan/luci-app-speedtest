@@ -27,6 +27,7 @@ jobs:
 
       - name: Set up resources
         run: |
+          ls -l
           echo -e "\033[31m=>\033[34m Set up SDK OpenWRT \033[31m<=\033[0m"
           curl -s -L https://downloads.openwrt.org/releases/23.05.4/targets/x86/64/openwrt-sdk-23.05.4-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz -o sdk.tar.xz
           mkdir sdk && tar -xf sdk.tar.xz -C sdk --strip-components=1
@@ -68,10 +69,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          name: ${{ env.PKG_NAME }}
           tag_name: ${{ env.PKG_VERSION }}
-          release_name: ${{ env.PKG_NAME }}
           draft: false
           prerelease: false
           files: ${{ env.PKG_PATH }}
-          body: "Build dari IPK luci-app-speedtest"
+          body: |
+            ### Changelog $PKG_VERSION:
+            - 
 
