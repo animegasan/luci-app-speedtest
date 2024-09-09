@@ -84,16 +84,12 @@ jobs:
           prerelease: false
           files: ${{ env.PKG_PATH }}
           body: |
-            ## Changelog ${{ env.PKG_VERSION }}:
+            ### Changelog ${{ env.PKG_VERSION }}:
 
-            ### 📦 New build of ${{ env.PKG_NAME }}
-              -
+            ** 📦 New build of ${{ env.PKG_NAME }} **
 
-            ### 🐞 Bug fixes and improvements
-              -
+            ** 🐞 Bug fixes and improvements **
 
-            ### ✨ Added new features
-              -
+            ** ✨ Added new features **
 
-            ### ❌ Removed deprecated features
-              -
+            ** ❌ Removed deprecated features **
