@@ -49,10 +49,10 @@ jobs:
         run: |
           echo -e "\033[34m🔍 Updating SDK feeds \033[0m"
           cd sdk
-          ./scripts/feeds update -a > /dev/null
+          ./scripts/feeds update -a > /dev/null 2>&1
 
           echo -e "\033[34m🔗 Installing SDK feeds \033[0m"
-          ./scripts/feeds install -a > /dev/null
+          ./scripts/feeds install -a > /dev/null 2>&1
 
       - name: ⚙️ Configure & compile IPK
         run: |
