@@ -89,7 +89,7 @@ jobs:
             **📦 New build of ${{ env.PKG_NAME }}**
 
             **🐞 Bug fixes and improvements**
-
-            **📝 Full Changelog**
             
             **📸 Screenshot of application**
+
+            **📝 Full Changelog**
