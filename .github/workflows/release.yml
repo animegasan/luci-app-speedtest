@@ -31,9 +31,9 @@ jobs:
           export TERM=xterm
           echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
           echo "PKG_NAME=$PKG_NAME" >> $GITHUB_ENV
-          echo -e "\033[34m📦 PKG_NAME: $PKG_NAME \033[0m"
-          echo -e "\033[34m🔖 PKG_VERSION: $PKG_VERSION \033[0m"
-          echo -e "\033[34m💻 Terminal set to xterm \033[0m"
+          echo -e "\033[34m\t📦 PKG_NAME:\033[37m $PKG_NAME \033[0m"
+          echo -e "\033[34m\t🔖 PKG_VERSION:\033[37m $PKG_VERSION \033[0m"
+          echo -e "\033[34m\t💻 TERM:\033[37m xterm \033[0m"
 
       - name: 📦 Set up resources
         run: |
@@ -70,8 +70,8 @@ jobs:
           PKG_FILE=$(basename $PKG_PATH)
           echo "PKG_PATH=sdk/$PKG_PATH" >> $GITHUB_ENV
           echo "PKG_FILE=$PKG_FILE" >> $GITHUB_ENV
-          echo -e "\033[34m📂 Package path: $PKG_PATH \033[0m"
-          echo -e "\033[34m📄 Package file: $PKG_FILE \033[0m"
+          echo -e "\033[34m\t📂 Package path:\033[37m $PKG_PATH \033[0m"
+          echo -e "\033[34m\t📄 Package file:\033[37m $PKG_FILE \033[0m"
 
       - name: 🚀 Generate new tag & release
         uses: softprops/action-gh-release@v2
