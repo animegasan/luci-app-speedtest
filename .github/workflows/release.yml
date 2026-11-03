@@ -70,16 +70,16 @@ jobs:
           rm -rf feeds/luci/contrib/package/csstidy
           sed -i '/^CONFIG_LUCI_JSMIN=/d' .config
           sed -i '/^CONFIG_LUCI_CSSTIDY=/d' .config
-
+      
           make "package/${PKG_NAME}/clean"
           make "package/${PKG_NAME}/compile" -j"$(nproc)" V=s
-
-          PKG_PATH="$(find bin/packages -type f -name "${PKG_NAME}_*.apk" -print -quit)"
+      
+          PKG_PATH="$(find bin/packages -type f -name '*.apk' | grep '/luci/' | head -n 1)"
           if [[ -z "$PKG_PATH" || ! -f "$PKG_PATH" ]]; then
             echo "No ${PKG_NAME} APK was produced under sdk/bin/packages" >&2
             exit 1
           fi
-
+      
           echo "PKG_PATH=sdk/$PKG_PATH" >> "$GITHUB_ENV"
           echo "Built package: $PKG_PATH"
 
