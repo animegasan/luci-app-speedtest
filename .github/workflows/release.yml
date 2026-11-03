@@ -1,95 +1,109 @@
-name: Build IPK
+name: Build OpenWrt APK
 
 on:
   push:
     branches:
-      - master
+      - speedtestcpp
     paths:
       - 'Makefile'
+      - 'htdocs/**'
+      - 'po/**'
+      - 'root/**'
+      - '.github/workflows/release.yml'
   workflow_dispatch:
+
+env:
+  OPENWRT_VERSION: 25.12.6
+  SDK_URL: https://downloads.openwrt.org/releases/25.12.6/targets/x86/64/openwrt-sdk-25.12.6-x86-64_gcc-14.3.0_musl.Linux-x86_64.tar.zst
 
 jobs:
   build:
-    name: Build IPK
+    name: Build OpenWrt 25.12 APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🔄 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🛠️ Set up build environment
+      - name: Install build dependencies
         run: |
-          echo -e "\033[34m🔨 Preparing build environment \033[0m"
-          sudo -E apt-get update > /dev/null 2>&1
-          sudo -E apt-get install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev python3-setuptools rsync swig unzip zlib1g-dev file wget > /dev/null 2>&1
-          sudo -E apt-get autoremove --purge > /dev/null 2>&1
-          sudo -E apt-get clean > /dev/null 2>&1
-          
-          echo -e "\033[34m🔧 Configuring environment \033[0m"
-          PKG_NAME=$(basename ${{ github.repository }})
-          PKG_VERSION=$(grep -oP 'PKG_VERSION:=\K.*' Makefile)
-          export TERM=xterm
-          echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
-          echo "PKG_NAME=$PKG_NAME" >> $GITHUB_ENV
-          echo -e "\033[34m\t📦 PKG_NAME:\033[37m $PKG_NAME \033[0m"
-          echo -e "\033[34m\t🔖 PKG_VERSION:\033[37m $PKG_VERSION \033[0m"
-          echo -e "\033[34m\t💻 TERM:\033[37m xterm \033[0m"
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            build-essential clang flex bison g++ gawk gettext git \
+            libncurses-dev libssl-dev python3 python3-setuptools \
+            rsync swig unzip zlib1g-dev file wget zstd
 
-      - name: 📦 Set up resources
+      - name: Prepare SDK and package source
+        shell: bash
         run: |
-          echo -e "\033[34m🗂️ Downloading SDK OpenWRT \033[0m"
-          curl -s -L https://downloads.openwrt.org/releases/23.05.4/targets/x86/64/openwrt-sdk-23.05.4-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz -o sdk.tar.xz
-          mkdir sdk && tar -xf sdk.tar.xz -C sdk --strip-components=1
+          set -euo pipefail
 
-          echo -e "\033[34m📦 Cloning $PKG_NAME package \033[0m"
-          git clone -q https://github.com/${{ github.repository }} sdk/package/${PKG_NAME}
-          chmod +x sdk/package/${PKG_NAME}/root/usr/share/speedtest/schedule
+          PKG_NAME="${GITHUB_REPOSITORY##*/}"
+          PKG_VERSION="$(sed -n 's/^PKG_VERSION:=//p' Makefile | head -n 1)"
+          test -n "$PKG_VERSION" || { echo "PKG_VERSION not found in Makefile" >&2; exit 1; }
 
-      - name: 📡 Set up SDK feeds
+          echo "PKG_NAME=$PKG_NAME" >> "$GITHUB_ENV"
+          echo "PKG_VERSION=$PKG_VERSION" >> "$GITHUB_ENV"
+
+          curl --fail --location --retry 3 "$SDK_URL" --output sdk.tar.zst
+          mkdir -p sdk
+          tar --zstd -xf sdk.tar.zst -C sdk --strip-components=1
+
+          mkdir -p "sdk/package/$PKG_NAME"
+          git archive HEAD | tar -xf - -C "sdk/package/$PKG_NAME"
+          chmod +x "sdk/package/$PKG_NAME/root/usr/share/speedtest/schedule"
+
+      - name: Update SDK feeds
+        shell: bash
         run: |
-          echo -e "\033[34m🔍 Updating SDK feeds \033[0m"
+          set -euo pipefail
           cd sdk
-          ./scripts/feeds update -a > /dev/null 2>&1
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
 
-          echo -e "\033[34m🔗 Installing SDK feeds \033[0m"
-          ./scripts/feeds install -a > /dev/null 2>&1
-
-      - name: ⚙️ Configure & compile IPK
+      - name: Configure and compile package
+        shell: bash
         run: |
-          echo -e "\033[34m🔧 Configuring SDK \033[0m"
-          cd sdk && make defconfig > /dev/null 2>&1
+          set -euo pipefail
+          cd sdk
+          make defconfig
           rm -rf feeds/luci/contrib/package/csstidy
           sed -i '/^CONFIG_LUCI_JSMIN=/d' .config
           sed -i '/^CONFIG_LUCI_CSSTIDY=/d' .config
 
-          echo -e "\033[34m🔨 Compiling ${PKG_NAME} package \033[0m"
-          make package/${PKG_NAME}/{clean,compile} -j$(nproc) > /dev/null 2>&1
+          make "package/${PKG_NAME}/clean"
+          make "package/${PKG_NAME}/compile" -j"$(nproc)" V=s
 
-          echo -e "\033[34m📦 Compilation completed: \033[0m"
-          PKG_PATH=$(find bin/packages/x86_64/luci/ -name 'luci-app-*.ipk')
-          PKG_FILE=$(basename $PKG_PATH)
-          echo "PKG_PATH=sdk/$PKG_PATH" >> $GITHUB_ENV
-          echo "PKG_FILE=$PKG_FILE" >> $GITHUB_ENV
-          echo -e "\033[34m\t📂 Package path:\033[37m $PKG_PATH \033[0m"
-          echo -e "\033[34m\t📄 Package file:\033[37m $PKG_FILE \033[0m"
+          PKG_PATH="$(find bin/packages -type f -name "${PKG_NAME}_*.apk" -print -quit)"
+          if [[ -z "$PKG_PATH" || ! -f "$PKG_PATH" ]]; then
+            echo "No ${PKG_NAME} APK was produced under sdk/bin/packages" >&2
+            exit 1
+          fi
 
-      - name: 🚀 Generate new tag & release
+          echo "PKG_PATH=sdk/$PKG_PATH" >> "$GITHUB_ENV"
+          echo "Built package: $PKG_PATH"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: luci-app-speedtest-openwrt-${{ env.OPENWRT_VERSION }}-x86-64
+          path: ${{ env.PKG_PATH }}
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish GitHub release
+        if: github.ref == 'refs/heads/speedtestcpp'
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: ${{ env.PKG_NAME }}
+          name: ${{ env.PKG_NAME }} ${{ env.PKG_VERSION }} (OpenWrt ${{ env.OPENWRT_VERSION }})
           tag_name: ${{ env.PKG_VERSION }}
           draft: false
           prerelease: false
           files: ${{ env.PKG_PATH }}
           body: |
-            ### Changelog ${{ env.PKG_VERSION }}:
+            OpenWrt ${{ env.OPENWRT_VERSION }} x86/64 APK build of `${{ env.PKG_NAME }}`.
 
-            **📦 New build of ${{ env.PKG_NAME }}**
-
-            **🐞 Bug fixes and improvements**
-            
-            **📸 Screenshot of application**
-
-            **📝 Full Changelog**
+            Runtime dependency:
+            - `speedtestcpp`
