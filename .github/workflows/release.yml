@@ -16,6 +16,9 @@ env:
   OPENWRT_VERSION: 25.12.6
   SDK_URL: https://downloads.openwrt.org/releases/25.12.6/targets/x86/64/openwrt-sdk-25.12.6-x86-64_gcc-14.3.0_musl.Linux-x86_64.tar.zst
 
+permissions:
+  contents: write
+  
 jobs:
   build:
     name: Build OpenWrt 25.12 APK
